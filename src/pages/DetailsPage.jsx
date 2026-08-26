@@ -2,22 +2,38 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-export function DetailsPage({ loading, setLoading }) {
+export function DetailsPage({ loading, error, setLoading, setError }) {
     const [movie, setMovie] = useState("");
     const { id } = useParams();
     useEffect(() => {
+        setLoading(true);
+        setError(null);
         const fetchData = async () => {
-            const response = await axios.get(
-                `https://www.omdbapi.com/?i=${id}&apikey=fb1a0c25`,
-            );
-            setMovie(response.data);
+            try {
+                const response = await axios.get(
+                    `https://www.omdbapi.com/?i=${id}&apikey=fb1a0c25`,
+                );
+                if (response.data.Response === "False") {
+                    setError(response.data.Error);
+                    setMovie("");
+                } else {
+                    setMovie(response.data);
+                }
+            } catch {
+                setError("Something Went wrong. Please Try again later.");
+            } finally {
+                setLoading(false);
+            }
         };
         fetchData();
-    }, [id]);
+    }, [id, setError, setLoading]);
     return (
         <div className="details-page">
             {!movie ? (
-                <p className="loading-state">Loading...</p>
+                <>
+                    {loading && <p className="loading-state">Loading...</p>}
+                    {error && <p className="error-message">{error}</p>}
+                </>
             ) : (
                 <div className="detail-layout">
                     <img

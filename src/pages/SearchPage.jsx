@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SearchBar } from "../components/SearchBar";
 import axios from "axios";
 import { MovieGrid } from "../components/MovieGrid";
@@ -10,9 +9,9 @@ export function SearchPage({
     setSearch,
     movies,
     setMovies,
+    loading,
+    error,
 }) {
-    const [query, setQuery] = useState("");
-
     const onSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -21,8 +20,13 @@ export function SearchPage({
             const response = await axios.get(
                 `https://www.omdbapi.com/?s=${search}&apikey=fb1a0c25`,
             );
-            setMovies(response.data.Search);
-        } catch (err) {
+            if (response.data.Response === "False") {
+                setError(response.data.Error);
+                setMovies([]);
+            } else {
+                setMovies(response.data.Search);
+            }
+        } catch {
             setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
@@ -36,7 +40,7 @@ export function SearchPage({
                 onSubmit={onSubmit}
             />
 
-            <MovieGrid movies={movies} />
+            {!loading && !error && <MovieGrid movies={movies} />}
         </>
     );
 }
