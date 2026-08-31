@@ -1,16 +1,38 @@
-# React + Vite
+# Movie Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React app for searching movies and viewing detailed information, powered by the OMDb API.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** https://movie-search-47il.onrender.com
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![App Screenshot](./assets/image.png)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Search for movies by title, with real-time results from the OMDb API
+- Click any result to view a dedicated details page (plot, cast, rating, runtime, and more)
+- Graceful loading and error handling — including a proper message when no results are found
+- Client-side routing between the search page and details page using React Router
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- React Router
+- Axios
+- OMDb API
+
+## Key Implementation Detail
+
+The details page reads a dynamic `id` from the URL using React Router's `useParams()`, then fetches that specific movie's data with `useEffect` on page load — a common real-world pattern for detail/profile-style pages.
+
+## What I Learned
+
+I learned how to integrate a real external API into a React app, handle asynchronous data fetching with loading and error states, and implement multi-page navigation using React Router.
+
+## Running Locally
+
+```bash
+git clone https://github.com/pasanghilp-art/movie-search.git
+cd movie-search
+npm install
+npm run dev
+```
